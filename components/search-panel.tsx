@@ -3,9 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Song } from "@/app/type";
-
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -16,8 +14,8 @@ const formSchema = z.object({
 });
 
 interface SearchPanelProps {
-  setSearchSong: (song: any) => void;
-  setSearchState: (searchState: any) => void;
+  setSearchSong: (_: any) => void;
+  setSearchState: (_: any) => void;
 }
 
 export default function SearchPanel({
