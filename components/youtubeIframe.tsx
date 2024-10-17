@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import Script from "next/script";
 
 interface YoutubeIframeComponentProps {
   videoId: string;
@@ -50,9 +52,9 @@ export default function YoutubeIframeComponent({
   useEffect(() => {
     function onYouTubeIframeAPIReady() {
       const newPlayer = new YT.Player(`youtube-player`, {
-        height: "390",
-        width: "640",
-        videoId: "g4IEhywhzIs",
+        height: "300",
+        width: "500",
+        videoId: videoId,
         playerVars: {
           start: 0,
         },
@@ -66,8 +68,9 @@ export default function YoutubeIframeComponent({
   }, []);
 
   return (
-    <div className="my-6">
-      <div id={`youtube-player`}></div>
+    <div className="max-w-full my-6">
+      <Script src="https://www.youtube.com/iframe_api" />
+      <div id={`youtube-player`}>{player ? null : <Skeleton />}</div>
     </div>
   );
 }

@@ -13,10 +13,7 @@ export default function SearchResultPanel({
     <div className="flex flex-col gap-y-4">
       {videos.map((video, idx) => (
         <div
-          onClick={() => {
-            console.log(idx);
-            setVIndex(idx);
-          }}
+          onClick={() => setVIndex(idx)}
           key={video.videoId}
           className="flex flex-col gap-y-2 p-2 hover:text-blue-500"
         >

@@ -6,10 +6,7 @@ from lyric.utils import detect_language, romanize_ja_lyric, romanize_ko_lyric
 
 
 def get_lyric(track: str, artist: str, video: YoutubeVideo) -> Song | None:
-    song = Song()
-    song.track = track
-    song.artist = artist
-    song.video_id = video.video_id
+    song = Song(track, artist, video.video_id)
 
     # try to get synced lyric from syncedlyric
     lrc_lyric = SyncLyricsAPI.get_sync_lyric(song)
@@ -54,6 +51,11 @@ def get_lyric(track: str, artist: str, video: YoutubeVideo) -> Song | None:
 
 
 def generate_roma_lyrics(song: Song) -> Song:
+    if song.lang != "zh" and (
+        "zh" in song.synced_lyrics.keys() or "zh" in song.plain_lyrics.keys()
+    ):
+        song.support_translate = True
+
     if "ja" in song.synced_lyrics.keys():
         song.add_lyric("roma", romanize_ja_lyric(song.synced_lyrics["ja"], True), True)
     elif "ja" in song.plain_lyrics.keys():
@@ -63,5 +65,8 @@ def generate_roma_lyrics(song: Song) -> Song:
         song.add_lyric("roma", romanize_ko_lyric(song.synced_lyrics["ko"], True), True)
     elif "ko" in song.plain_lyrics.keys():
         song.add_lyric("roma", romanize_ko_lyric(song.plain_lyrics["ko"], False), False)
+
+    if "roma" in song.synced_lyrics.keys() or "roma" in song.plain_lyrics.keys():
+        song.support_romaji = True
 
     return song

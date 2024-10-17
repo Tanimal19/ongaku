@@ -1,17 +1,20 @@
-export type SyncLyric = {
-  "start-time": string;
+export type SyncLyricLine = {
+  "start": string;
   "text": string;
 }
 
-export type PlainLyric = string[];
+export type PlainLyricLine = string;
 
 export interface Song {
   track: string;
   artist: string;
   lang: string;
   videoId: string;
-  plainLyrics: Record<string, PlainLyric>;
-  syncedLyrics: Record<string, SyncLyric>;
+  supportSync: boolean;
+  supportTranslate: boolean;
+  supportRomaji: boolean;
+  plainLyrics: Record<string, PlainLyricLine[] | string>;
+  syncedLyrics: Record<string, SyncLyricLine[] | string>;
 }
 
 

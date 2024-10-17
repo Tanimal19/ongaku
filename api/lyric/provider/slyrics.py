@@ -7,13 +7,21 @@ class SyncLyricsAPI:
     def get_sync_lyric(song: Song):
         print("Fetching sync lyrics from syncedlyrics...")
 
+        # try lrclib first
         lrc_lyric = syncedlyrics.search(
             f"{song.track} {song.artist}",
             synced_only=True,
-            providers=["Musixmatch", "Genius", "Lrclib", "NetEase"],
+            providers=["Lrclib"],
         )
         if lrc_lyric is None:
-            return None
+            lrc_lyric = syncedlyrics.search(
+                f"{song.track} {song.artist}",
+                synced_only=True,
+                providers=["Musixmatch"],
+            )
+            if lrc_lyric is None:
+                return None
+
         json_lyric = lrc_to_json(lrc_lyric)
         return json_lyric
 

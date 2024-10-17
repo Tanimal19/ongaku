@@ -6,8 +6,22 @@ class Song:
     artist: str = None
     lang: str = None
     video_id: str = None
+    support_sync: bool = False
+    support_translate: bool = False
+    support_romaji: bool = False
     plain_lyrics: dict = {}
     synced_lyrics: dict = {}
+
+    def __init__(self, track: str, artist: str, video_id: str):
+        self.track = track
+        self.artist = artist
+        self.lang = None
+        self.video_id = video_id
+        self.support_sync = False
+        self.support_translate = False
+        self.support_romaji = False
+        self.plain_lyrics = {}
+        self.synced_lyrics = {}
 
     def __str__(self):
         s = f"track: {self.track}\n"
@@ -26,6 +40,7 @@ class Song:
     def add_lyric(self, lang: str, lyric: str, synced: bool):
         if synced:
             self.synced_lyrics.update({lang: lyric})
+            self.support_sync = True
         else:
             self.plain_lyrics.update({lang: lyric})
 
@@ -35,6 +50,9 @@ class Song:
             "artist": self.artist,
             "lang": self.lang,
             "videoId": self.video_id,
+            "supportSync": self.support_sync,
+            "supportTranslate": self.support_translate,
+            "supportRomaji": self.support_romaji,
             "plainLyrics": self.plain_lyrics,
             "syncedLyrics": self.synced_lyrics,
         }

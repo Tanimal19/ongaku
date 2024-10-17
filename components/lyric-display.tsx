@@ -1,14 +1,36 @@
-interface SyncLyricDisplayProps {
-  lyrics: {
-    "start-time": string;
-    "end-time": string;
-  }[];
+import { Song } from "@/app/type";
+import { useEffect } from "react";
+
+interface LyricDisplayProps {
+  song: Song;
+  sync: boolean;
+  translate: boolean;
+  romaji: boolean;
+  time: string;
+  setTime: (time: any) => void;
 }
 
-export default function SyncLyricDisplay(lyrics: any) {
+export default function LyricDisplay({
+  song,
+  sync,
+  translate,
+  romaji,
+  time,
+  setTime,
+}: LyricDisplayProps) {
   return (
     <div>
-      <h1>LyricDisplay</h1>
+      {song.supportSync
+        ? Object.values(song.syncedLyrics[song.lang]).map((line) => (
+            <div key={line["start"]}>
+              <p>{line["text"]}</p>
+            </div>
+          ))
+        : Object.values(song.plainLyrics[song.lang]).map((line, index) => (
+            <div key={index}>
+              <p>{line}</p>
+            </div>
+          ))}
     </div>
   );
 }

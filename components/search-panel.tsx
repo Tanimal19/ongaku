@@ -7,13 +7,7 @@ import { useForm } from "react-hook-form";
 import { Song } from "@/app/type";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
@@ -22,13 +16,13 @@ const formSchema = z.object({
 });
 
 interface SearchPanelProps {
-  setSong: (song: any) => void;
-  setIsSearching: (isSearching: any) => void;
+  setSearchSong: (song: any) => void;
+  setSearchState: (searchState: any) => void;
 }
 
 export default function SearchPanel({
-  setSong,
-  setIsSearching,
+  setSearchSong,
+  setSearchState,
 }: SearchPanelProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,19 +33,21 @@ export default function SearchPanel({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    setSong((prev: Song) => {
+    setSearchSong((prev: Song) => {
       return {
         ...prev,
         track: values.track,
         artist: values.artist,
       };
     });
-    setIsSearching(true);
+    setSearchState("search video");
+    form.reset();
   }
 
   return (
     <Form {...form}>
       <form
+        autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-row gap-x-4"
       >
@@ -63,7 +59,6 @@ export default function SearchPanel({
               <FormControl>
                 <Input placeholder="track name" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -75,11 +70,10 @@ export default function SearchPanel({
               <FormControl>
                 <Input placeholder="artist name" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Search</Button>
+        <Button className="hidden" type="submit"></Button>
       </form>
     </Form>
   );
