@@ -1,0 +1,49 @@
+import { Song, YoutubeVideo } from "@/app/type"
+
+export async function searchYoutubeVideo(query: string): Promise<YoutubeVideo[] | null> {
+  const response = await fetch("/api/search-youtube", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "query": query,
+      "max_results": 5,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error(errorData.error || "Failed to search videos");
+    return null;
+  }
+
+  const videos: YoutubeVideo[] = await response.json();
+
+  return videos;
+}
+
+export async function getLyrics(track: string, artist: string, video: YoutubeVideo): Promise<Song | null> {
+  const response = await fetch("/api/get-lyrics", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "track": track,
+      "artist": artist,
+      "video": video,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error(errorData.error || "Failed to get lyrics");
+    return null;
+  }
+
+  const song: Song = await response.json();
+  console.log(song);
+
+  return song;
+}
