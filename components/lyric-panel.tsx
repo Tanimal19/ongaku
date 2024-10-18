@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Song } from "@/app/type";
+import { Song, SyncLyricLine } from "@/app/type";
 import { Toggle } from "@/components/ui/toggle";
 import LyricDisplay from "@/components/lyric-display";
 import { Skeleton } from "./ui/skeleton";

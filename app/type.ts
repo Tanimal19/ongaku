@@ -13,8 +13,8 @@ export interface Song {
   supportSync: boolean;
   supportTranslate: boolean;
   supportRomaji: boolean;
-  plainLyrics: Record<string, PlainLyricLine[] | string>;
-  syncedLyrics: Record<string, SyncLyricLine[] | string>;
+  plainLyrics: Record<string, PlainLyricLine[]>;
+  syncedLyrics: Record<string, SyncLyricLine[]>;
 }
 
 

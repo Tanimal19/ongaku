@@ -42,7 +42,7 @@ export async function getLyrics(track: string, artist: string, video: YoutubeVid
     return null;
   }
 
-  let song: Song = await response.json();
+  let song: any = await response.json();
 
   if (song.syncedLyrics) {
     Object.entries(song.syncedLyrics).map((ent) => {
@@ -62,5 +62,5 @@ export async function getLyrics(track: string, artist: string, video: YoutubeVid
 
   console.log(song);
 
-  return song;
+  return song as Song;
 }

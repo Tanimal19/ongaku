@@ -45,12 +45,31 @@ export default function LyricDisplay({
           romaji={romaji}
         />
       ) : (
-        Object.values(song.plainLyrics[song.lang]).map(
-          (line: PlainLyricLine, index) => (
-            <div key={index}>
-              <p>{line}</p>
-            </div>
-          )
+        <PlainLyricDisplay
+          song={song}
+          sync={sync}
+          translate={translate}
+          romaji={romaji}
+        />
+      )}
+    </div>
+  );
+}
+
+function PlainLyricDisplay({ song, translate, romaji }: LyricDisplayProps) {
+  return (
+    <div>
+      {Object.values(song.plainLyrics[song.lang]).map(
+        (line: PlainLyricLine, index) => (
+          <div key={index}>
+            {song.supportRomaji && romaji ? (
+              <p>{song.plainLyrics["roma"][index]}</p>
+            ) : null}
+            <p>{line}</p>
+            {song.supportTranslate && translate ? (
+              <p>{song.plainLyrics["zh"][index]}</p>
+            ) : null}
+          </div>
         )
       )}
     </div>
@@ -109,7 +128,12 @@ function SyncLyricDisplay({
     <div>
       {Object.values(song.syncedLyrics[song.lang]).map(
         (line: SyncLyricLine, index) => (
-          <div key={line["start"]}>
+          <div key={line["start"]} className="flex flex-col gap-y-2">
+            {song.supportRomaji && romaji ? (
+              <p className="text-sm">
+                {song.syncedLyrics["roma"][index]["text"]}
+              </p>
+            ) : null}
             {sync ? (
               <p
                 className={cn(
@@ -126,6 +150,11 @@ function SyncLyricDisplay({
             ) : (
               <p>{line["text"]}</p>
             )}
+            {song.supportTranslate && translate ? (
+              <p className="text-sm">
+                {song.syncedLyrics["zh"][index]["text"]}
+              </p>
+            ) : null}
           </div>
         )
       )}
