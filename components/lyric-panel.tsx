@@ -6,6 +6,7 @@ import { Song } from "@/app/type";
 
 import { Toggle } from "@/components/ui/toggle";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Slider } from "@/components/ui/slider";
 import LyricDisplay from "@/components/lyric-display";
 import Player from "@/components/player";
 
@@ -19,13 +20,13 @@ export default function LyricPanel({ song }: LyricPanelProps) {
   const [romaji, setRomaji] = useState<boolean>(false);
 
   useEffect(() => {
-    setSync(song?.supportSync == true);
+    setSync(false);
     setTranslate(false);
     setRomaji(false);
   }, [song?.videoId]);
 
   return (
-    <div className="w-full max-h-full overflow-y-scroll flex flex-col gap-4 justify-center items-center px-4">
+    <div className="w-full overflow-y-scroll flex-1 px-4">
       {song ? (
         <LyricDisplay
           song={song}
@@ -35,15 +36,15 @@ export default function LyricPanel({ song }: LyricPanelProps) {
         />
       ) : (
         <div className="flex flex-col items-center gap-y-4 my-4">
-          <Skeleton className="h-60 w-52" />
-          <Skeleton className="h-60 w-64" />
-          <Skeleton className="h-60 w-52" />
-          <Skeleton className="h-60 w-64" />
-          <Skeleton className="h-60 w-52" />
+          <Skeleton className="h-6 w-52" />
+          <Skeleton className="h-6 w-64" />
+          <Skeleton className="h-6 w-52" />
+          <Skeleton className="h-6 w-64" />
+          <Skeleton className="h-6 w-52" />
         </div>
       )}
 
-      <div className="flex flex-col w-full fixed bottom-0 backdrop-blur-lg px-4 py-4">
+      <div className="flex flex-col fixed bottom-0 left-0 w-full backdrop-blur-lg px-4 py-4">
         {song ? <Player /> : null}
         <div className="flex flex-row w-full items-center h-10">
           {song ? (
@@ -51,25 +52,17 @@ export default function LyricPanel({ song }: LyricPanelProps) {
               {song.title}
             </p>
           ) : (
-            <div className="flex-auto">
-              <Skeleton className="h-6 w-32" />
-            </div>
+            <p className="flex-auto line-clamp-1 font-bold text-sm opacity-40">
+              no music playing
+            </p>
           )}
 
-          {song ? (
-            <LyricPanelConfig
-              song={song}
-              setSync={setSync}
-              setTranslate={setTranslate}
-              setRomaji={setRomaji}
-            />
-          ) : (
-            <div className="flex flex-row gap-x-4 justify-end">
-              <Skeleton className="h-10 w-10" />
-              <Skeleton className="h-10 w-10" />
-              <Skeleton className="h-10 w-10" />
-            </div>
-          )}
+          <LyricPanelConfig
+            song={song}
+            setSync={setSync}
+            setTranslate={setTranslate}
+            setRomaji={setRomaji}
+          />
         </div>
       </div>
     </div>
@@ -77,7 +70,7 @@ export default function LyricPanel({ song }: LyricPanelProps) {
 }
 
 interface LyricPanelConfigProps {
-  song: Song;
+  song: Song | null;
   setSync: (_: any) => void;
   setTranslate: (_: any) => void;
   setRomaji: (_: any) => void;
@@ -94,9 +87,10 @@ function LyricPanelConfig({
       <Toggle
         size="sm"
         aria-label="sync"
-        disabled={song.supportSync == false || song.supportSync == undefined}
+        disabled={
+          !song || song.supportSync == false || song.supportSync == undefined
+        }
         onClick={() => setSync((prev: boolean) => !prev)}
-        defaultPressed={song.supportSync == true}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +106,9 @@ function LyricPanelConfig({
         size="sm"
         aria-label="translate"
         disabled={
-          song.supportTranslate == false || song.supportTranslate == undefined
+          !song ||
+          song.supportTranslate == false ||
+          song.supportTranslate == undefined
         }
         onClick={() => setTranslate((prev: boolean) => !prev)}
       >
@@ -130,7 +126,9 @@ function LyricPanelConfig({
         size="sm"
         aria-label="romaji"
         disabled={
-          song.supportRomaji == false || song.supportRomaji == undefined
+          !song ||
+          song.supportRomaji == false ||
+          song.supportRomaji == undefined
         }
         onClick={() => setRomaji((prev: boolean) => !prev)}
       >

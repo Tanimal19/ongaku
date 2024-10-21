@@ -5,7 +5,7 @@ interface SearchResultPanelProps {
   setVIndex: (_: any) => void;
 }
 
-export default function SearchResultPanel({
+export default function SearchResult({
   videos,
   setVIndex,
 }: SearchResultPanelProps) {
@@ -15,7 +15,7 @@ export default function SearchResultPanel({
         <div
           onClick={() => setVIndex(idx)}
           key={video.videoId}
-          className="flex flex-col py-2 px-4 hover:bg-pink-100 cursor-pointer"
+          className="flex flex-col py-2 px-4 text-left hover:bg-pink-100 cursor-pointer outline-stone-200"
         >
           <p className="w-full text-base text-ellipsis overflow-hidden whitespace-nowrap">
             {video.title}

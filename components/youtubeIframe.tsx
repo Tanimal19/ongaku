@@ -56,7 +56,7 @@ export default function YoutubeIframeComponent() {
   }, [player]);
 
   return (
-    <div className="w-full h-fit mb-2 sm:mx-4">
+    <div className="w-full h-fit sm:mx-4">
       <Script src="https://www.youtube.com/iframe_api" />
       <div ref={playerRef} id={`youtube-player`}>
         {player ? null : (

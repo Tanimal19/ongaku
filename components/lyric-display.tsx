@@ -63,7 +63,9 @@ export default function LyricDisplay({
   }, []);
 
   return (
-    <div className={cn("flex flex-col text-stone-400 w-full pb-40 my-4")}>
+    <div
+      className={cn("flex flex-col w-full h-full pb-40 my-4 text-stone-400")}
+    >
       {Object.values(
         song.supportSync
           ? song.syncedLyrics[song.lang]
