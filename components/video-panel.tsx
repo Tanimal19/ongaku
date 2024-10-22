@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 
 import { Song } from "@/app/type";
 
-import { Separator } from "@/components/ui/separator";
 import { timeContext } from "@/components/main-panel";
 import YoutubeIframeComponent from "@/components/youtubeIframe";
 
@@ -30,7 +29,7 @@ export default function VideoPanel({ song }: VideoPanelProps) {
   }, [song?.videoId]);
 
   return (
-    <div className="w-full h-fit md:w-1/2 md:max-w-[640px]">
+    <div className="w-full h-fit sm:ml-10 sm:mt-8 sm:w-1/2 sm:fixed">
       <div
         className={cn(
           "transition-all duration-200 overflow-hidden",
@@ -39,9 +38,8 @@ export default function VideoPanel({ song }: VideoPanelProps) {
       >
         <YoutubeIframeComponent />
       </div>
-      <Separator className="mb-2" />
       <div
-        className="bg-transparent backdrop-blur-lg w-full inline-flex justify-center md:hidden"
+        className="bg-transparent backdrop-blur-lg w-full inline-flex justify-center sm:hidden"
         onClick={() => {
           setHideIframe((prev) => !prev);
         }}

@@ -64,7 +64,10 @@ export default function LyricDisplay({
 
   return (
     <div
-      className={cn("flex flex-col w-full h-full pb-40 my-4 text-stone-400")}
+      className={cn(
+        "flex flex-col w-full h-full pb-40 font-bold",
+        sync ? "text-stone-400" : "text-stone-950"
+      )}
     >
       {Object.values(
         song.supportSync
@@ -74,7 +77,8 @@ export default function LyricDisplay({
         <div
           key={line["start"]}
           className={cn(
-            "flex flex-col my-2 hover:opacity-70",
+            "flex flex-col my-2",
+            sync ? "hover:opacity-70 cursor-pointer" : null,
             sync && index <= curIndex ? "text-stone-950" : "text-inherit"
           )}
           onClick={
@@ -87,7 +91,7 @@ export default function LyricDisplay({
               : undefined
           }
         >
-          <p className="text-base">{song.supportSync ? line["text"] : line}</p>
+          <p className="text-xl">{song.supportSync ? line["text"] : line}</p>
 
           {song.supportRomaji && romaji ? (
             <p className="text-sm">

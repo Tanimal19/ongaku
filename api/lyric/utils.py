@@ -83,3 +83,45 @@ def romanize_ko_lyric(lyric: str, isJson: bool = False) -> str:
             entry["text"] = r.romanize()
 
         return json.dumps(lyric_json, ensure_ascii=False)
+
+
+def match_lyric_and_translation(lyric: str, translation: str) -> str:
+    lyric_lines = json.loads(lyric)
+    translation_lines = json.loads(translation)
+    new_translation_lines = []
+
+    error = 0.3
+
+    if len(lyric_lines) == len(translation_lines):
+        return translation
+
+    try:
+        j = 0
+
+        # find the first line matching the start time
+        while (
+            float(translation_lines[j]["start"])
+            < float(lyric_lines[0]["start"]) - error
+        ):
+            j += 1
+
+        for i in range(0, len(lyric_lines)):
+            text = translation_lines[j]["text"]
+            j += 1
+
+            if i + 1 < len(lyric_lines):
+                while (
+                    float(translation_lines[j]["start"])
+                    < float(lyric_lines[i + 1]["start"]) - error
+                ):
+                    text += "\u3000" + translation_lines[j]["text"]
+                    j += 1
+
+            new_translation_lines.append(
+                {"start": lyric_lines[i]["start"], "text": text}
+            )
+
+        return json.dumps(new_translation_lines, ensure_ascii=False)
+
+    except Exception as e:
+        return translation

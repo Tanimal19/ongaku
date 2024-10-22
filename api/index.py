@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from lyric.provider.youtube import YoutubeAPI, YoutubeVideo
 from lyric.type import Song, YoutubeVideo
-from lyric.lyricAPI import get_lyric, generate_roma_lyrics
+from lyric.lyricAPI import get_lyric, lyric_process
 
 app = Flask(__name__)
 
@@ -29,7 +29,7 @@ def get_lyrics():
     video: YoutubeVideo = YoutubeVideo.from_dict(data.get("video"))
 
     song: Song = get_lyric(track, artist, video)
-    song = generate_roma_lyrics(song)
+    song = lyric_process(song)
 
     if song is None:
         return jsonify({"error": "An error occurred during the request"}), 500

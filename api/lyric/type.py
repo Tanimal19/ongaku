@@ -40,7 +40,6 @@ class Song:
     def add_lyric(self, lang: str, lyric: str, synced: bool):
         if synced:
             self.synced_lyrics.update({lang: lyric})
-            self.support_sync = True
         else:
             self.plain_lyrics.update({lang: lyric})
 

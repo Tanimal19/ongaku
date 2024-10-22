@@ -3,7 +3,7 @@
 import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { Song, YoutubeVideo } from "@/app/type";
 import { searchYoutubeVideo, getLyrics } from "@/app/api";
@@ -16,10 +16,12 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SearchResult from "@/components/search-result";
+import { timeContext } from "@/components/main-panel";
 
 const formSchema = z.object({
   track: z.string().min(1),
@@ -27,11 +29,12 @@ const formSchema = z.object({
 });
 
 interface SearchPanelProps {
-  song: Song | null;
   setSong: (_: any) => void;
 }
 
-export default function SearchDialog({ song, setSong }: SearchPanelProps) {
+export default function SearchDialog({ setSong }: SearchPanelProps) {
+  const p = useContext(timeContext);
+  const [player, _] = p;
   const [formInput, setFormInput] = useState({ track: "", artist: "" });
   const [videos, setVideos] = useState<YoutubeVideo[]>([]);
   const [vIndex, setVIndex] = useState<number | null>(null);
@@ -70,6 +73,7 @@ export default function SearchDialog({ song, setSong }: SearchPanelProps) {
             setVIndex(null);
             setVideos([]);
             setSong(song);
+            player?.stopVideo();
           }
         }
       );
@@ -79,19 +83,25 @@ export default function SearchDialog({ song, setSong }: SearchPanelProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 -960 960 960"
-          width="24px"
-          fill="#000000"
-        >
-          <path d="M765-144 526-383q-30 22-65.79 34.5-35.79 12.5-76.18 12.5Q284-336 214-406t-70-170q0-100 70-170t170-70q100 0 170 70t70 170.03q0 40.39-12.5 76.18Q599-464 577-434l239 239-51 51ZM384-408q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Z" />
-        </svg>
+        <div className="p-1 rounded-lg hover:bg-muted">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            width="24px"
+            viewBox="0 -960 960 960"
+            fill="#000000"
+          >
+            <path d="M765-144 526-383q-30 22-65.79 34.5-35.79 12.5-76.18 12.5Q284-336 214-406t-70-170q0-100 70-170t170-70q100 0 170 70t70 170.03q0 40.39-12.5 76.18Q599-464 577-434l239 239-51 51ZM384-408q70 0 119-49t49-119q0-70-49-119t-119-49q-70 0-119 49t-49 119q0 70 49 119t119 49Z" />
+          </svg>
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md overflow-hidden rounded-lg flex flex-col">
         <DialogHeader className="my-4">
-          <DialogTitle>Find your favorite song.</DialogTitle>
+          <DialogTitle>Youtube 歌曲搜尋</DialogTitle>
+          <DialogDescription>
+            儘量用原文名稱來提高歌詞抓取的準確性，
+            例如使用「夜に駆ける」而不是「yorunikakeru」。
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -106,7 +116,7 @@ export default function SearchDialog({ song, setSong }: SearchPanelProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="track name" {...field} />
+                      <Input placeholder="歌曲名稱" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -117,7 +127,7 @@ export default function SearchDialog({ song, setSong }: SearchPanelProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="artist name" {...field} />
+                      <Input placeholder="歌手名稱" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -125,15 +135,15 @@ export default function SearchDialog({ song, setSong }: SearchPanelProps) {
             </div>
 
             <Button className="w-full" type="submit">
-              Find
+              搜尋
             </Button>
           </form>
         </Form>
-        <DialogClose>
-          {videos ? (
+        {videos.length > 0 ? (
+          <DialogClose>
             <SearchResult videos={videos} setVIndex={setVIndex} />
-          ) : null}
-        </DialogClose>
+          </DialogClose>
+        ) : null}
       </DialogContent>
     </Dialog>
   );

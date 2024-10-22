@@ -34,6 +34,7 @@ class YoutubeAPI:
             "order": "relevance",
             "q": query,
             "regionCode": "US",
+            "safeSearch": "strict",
             "type": "video",
             "maxResults": max_results,
             "key": YOUTUBE_API_KEY,
@@ -81,18 +82,18 @@ class YoutubeAPI:
             # check if there's a lyric in the same language as the song
             if song.lang in youtube_lyrics.keys():
                 filtered_lyric_list.append(youtube_lyrics[song.lang])
-            else:
+            elif song.synced_lyrics.get(song.lang) is None:
                 return None
 
             # check if there's a traditional chinese lyric
             if song.lang != "zh":
-                if "zh-TW" in youtube_lyrics.keys():
-                    youtube_lyrics["zh-TW"].language_code = "zh"
-                    filtered_lyric_list.append(youtube_lyrics["zh-TW"])
+                if "zh-Hant" in youtube_lyrics.keys():
+                    youtube_lyrics["zh-Hant"].language_code = "zh"
+                    filtered_lyric_list.append(youtube_lyrics["zh-Hant"])
                 else:
-                    if "zh-Hant" in youtube_lyrics.keys():
-                        youtube_lyrics["zh-Hant"].language_code = "zh"
-                        filtered_lyric_list.append(youtube_lyrics["zh-Hant"])
+                    if "zh-TW" in youtube_lyrics.keys():
+                        youtube_lyrics["zh-TW"].language_code = "zh"
+                        filtered_lyric_list.append(youtube_lyrics["zh-TW"])
                     else:
                         if "zh" in youtube_lyrics.keys():
                             filtered_lyric_list.append(youtube_lyrics["zh"])
