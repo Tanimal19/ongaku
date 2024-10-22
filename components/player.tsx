@@ -52,9 +52,9 @@ export default function Player({
     <div className="flex flex-col items-center fixed bottom-0 left-0 w-full bg-stone-300 bg-opacity-30 backdrop-blur-lg px-4 py-4">
       <div className="flex flex-row w-full items-center h-10 gap-x-2 sm:px-10">
         {song ? (
-          <p className="flex-1 line-clamp-1 font-bold text-sm">{song.title}</p>
+          <p className="flex-1 line-clamp-1 font-bold text-lg">{song.title}</p>
         ) : (
-          <p className="flex-1 line-clamp-1 font-bold text-sm opacity-40">
+          <p className="flex-1 line-clamp-1 font-bold opacity-40 text-lg">
             目前沒有音樂正在撥放
           </p>
         )}

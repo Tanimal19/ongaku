@@ -99,8 +99,8 @@ export default function SearchDialog({ setSong }: SearchPanelProps) {
         <DialogHeader className="my-4">
           <DialogTitle>Youtube 歌曲搜尋</DialogTitle>
           <DialogDescription>
-            儘量用原文名稱來提高歌詞抓取的準確性，
-            例如使用「夜に駆ける」而不是「yorunikakeru」。
+            <p>請儘量用原文名稱來提高歌詞抓取的準確性，</p>
+            <p>例如用「光れ - あたらよ」而不是「hikare - atarayo」</p>
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
