@@ -21,6 +21,21 @@ def search_youtube():
     return jsonify(videos_dict)
 
 
+@app.route("/api/get-youtube-video", methods=["POST"])
+def get_youtube_video():
+    data = request.get_json()
+    video_id = data.get("video_id")
+    videos: list[YoutubeVideo] = YoutubeAPI.search_video(video_id, 1)
+    video = videos[0]
+
+    if video is None:
+        return jsonify({"error": "An error occurred during the request"}), 500
+
+    video_dict = video.to_dict()
+
+    return jsonify(video_dict)
+
+
 @app.route("/api/get-lyrics", methods=["POST"])
 def get_lyrics():
     data = request.get_json()
@@ -30,6 +45,7 @@ def get_lyrics():
 
     song: Song = get_lyric(track, artist, video)
     song = lyric_process(song)
+    print(song)
 
     if song is None:
         return jsonify({"error": "An error occurred during the request"}), 500

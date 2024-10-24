@@ -1,25 +1,28 @@
 import { useState, useEffect, useContext } from "react";
 import { cn } from "@/lib/utils";
 
-import { Song, SyncLyricLine } from "@/app/type";
+import { SyncLyricLine } from "@/app/type";
 
-import { timeContext } from "@/components/main-panel";
+import { Skeleton } from "@/components/ui/skeleton";
+import { playerContext } from "@/components/main-panel";
+import { songContext } from "@/components/main-panel";
 
 interface LyricDisplayProps {
-  song: Song;
   sync: boolean;
   translate: boolean;
   romaji: boolean;
 }
 
 export default function LyricDisplay({
-  song,
   sync,
   translate,
   romaji,
 }: LyricDisplayProps) {
-  const p = useContext(timeContext);
-  const [player, _] = p;
+  const p = useContext(playerContext);
+  const [player] = p;
+  const s = useContext(songContext);
+  const [song] = s;
+
   const [curIndex, setcurIndex] = useState<number>(0);
 
   useEffect(() => {
@@ -46,7 +49,7 @@ export default function LyricDisplay({
       return lyric.length - 1;
     }
 
-    if (song.supportSync) {
+    if (song?.supportSync) {
       const interval = setInterval(() => {
         if (player) {
           const currentTime = player.getCurrentTime();
@@ -60,56 +63,80 @@ export default function LyricDisplay({
 
       return () => clearInterval(interval);
     }
-  }, []);
+  }, [song]);
 
   return (
-    <div
-      className={cn(
-        "flex flex-col w-full h-full pb-40 font-bold",
-        sync ? "text-stone-400" : "text-stone-950"
-      )}
-    >
-      {Object.values(
-        song.supportSync
-          ? song.syncedLyrics[song.lang]
-          : song.plainLyrics[song.lang]
-      ).map((line, index) => (
-        <div
-          key={line["start"]}
-          className={cn(
-            "flex flex-col my-2",
-            sync ? "hover:opacity-70 cursor-pointer" : null,
-            sync && index <= curIndex ? "text-stone-950" : "text-inherit"
+    <div>
+      {song ? (
+        <div>
+          {song.syncedLyrics[song.lang] || song.plainLyrics[song.lang] ? (
+            <div
+              className={cn(
+                "flex flex-col w-full h-full sm:px-[20%] items-start font-bold",
+                sync ? "text-stone-400" : "text-stone-950"
+              )}
+            >
+              {Object.values(
+                song.supportSync
+                  ? song.syncedLyrics[song.lang]
+                  : song.plainLyrics[song.lang]
+              ).map((line, index) => (
+                <div
+                  key={line["start"]}
+                  className={cn(
+                    "flex flex-col my-3",
+                    sync ? "hover:opacity-70 cursor-pointer" : null,
+                    sync && index <= curIndex
+                      ? "text-stone-950"
+                      : "text-inherit"
+                  )}
+                  onClick={
+                    sync
+                      ? () => {
+                          player?.seekTo(parseFloat(line["start"]), true);
+                          player?.playVideo();
+                          setcurIndex(index);
+                        }
+                      : undefined
+                  }
+                >
+                  <p className="text-xl">
+                    {song.supportSync ? line["text"] : line}
+                  </p>
+
+                  {song.supportRomaji && romaji ? (
+                    <p className="text-sm">
+                      {song.supportSync
+                        ? song.syncedLyrics["roma"][index]["text"]
+                        : song.plainLyrics["roma"][index]}
+                    </p>
+                  ) : null}
+
+                  {song.supportTranslate && translate ? (
+                    <p className="text-sm">
+                      {song.supportSync
+                        ? song.syncedLyrics["zh"][index]["text"]
+                        : song.plainLyrics["zh"][index]}
+                    </p>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="w-full inline-flex justify-center font-bold text-xl">
+              沒找到歌詞 :(
+            </div>
           )}
-          onClick={
-            sync
-              ? () => {
-                  player?.seekTo(parseFloat(line["start"]), true);
-                  player?.playVideo();
-                  setcurIndex(index);
-                }
-              : undefined
-          }
-        >
-          <p className="text-xl">{song.supportSync ? line["text"] : line}</p>
-
-          {song.supportRomaji && romaji ? (
-            <p className="text-sm">
-              {song.supportSync
-                ? song.syncedLyrics["roma"][index]["text"]
-                : song.plainLyrics["roma"][index]}
-            </p>
-          ) : null}
-
-          {song.supportTranslate && translate ? (
-            <p className="text-sm">
-              {song.supportSync
-                ? song.syncedLyrics["zh"][index]["text"]
-                : song.plainLyrics["zh"][index]}
-            </p>
-          ) : null}
         </div>
-      ))}
+      ) : (
+        <div className="flex flex-col items-center gap-y-4 my-4">
+          <Skeleton className="h-6 w-52 sm:w-1/2" />
+          <Skeleton className="h-6 w-64 sm:w-1/2" />
+          <Skeleton className="h-6 w-52 sm:w-1/2" />
+          <Skeleton className="h-6 w-64 sm:w-1/2" />
+          <Skeleton className="h-6 w-52 sm:w-1/2" />
+        </div>
+      )}
     </div>
   );
 }

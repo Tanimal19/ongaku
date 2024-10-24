@@ -33,7 +33,11 @@ class SyncLyricsAPI:
             plain_only=True,
             providers=["Musixmatch", "Genius", "Lrclib", "NetEase"],
         )
+
         if plain_lyric is None:
             return None
+        if "[" or "]" in plain_lyric:
+            return None
+
         json_lyric = lrc_to_json(plain_lyric)
         return json_lyric

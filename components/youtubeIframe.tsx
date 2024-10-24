@@ -1,15 +1,18 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useContext, useRef } from "react";
-
+import { useEffect, useContext } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { playerContext } from "@/components/main-panel";
 
-import { timeContext } from "@/components/main-panel";
+interface YoutubeIframeComponentProps {
+  wrapperWidth: number | null;
+}
 
-export default function YoutubeIframeComponent() {
-  const playerRef = useRef(null);
-  const p = useContext(timeContext);
+export default function YoutubeIframeComponent({
+  wrapperWidth,
+}: YoutubeIframeComponentProps) {
+  const p = useContext(playerContext);
   const [player, setPlayer] = p;
 
   // Create empty player (only once)
@@ -37,7 +40,7 @@ export default function YoutubeIframeComponent() {
       if (window.innerWidth <= 640) {
         width = window.innerWidth;
       } else {
-        width = Math.min(window.innerWidth / 2, 640);
+        width = wrapperWidth ? wrapperWidth : 640;
       }
       player.setSize(width, (width * 9) / 16);
     }
@@ -48,17 +51,23 @@ export default function YoutubeIframeComponent() {
         if (window.innerWidth <= 640) {
           width = window.innerWidth;
         } else {
-          width = Math.min(window.innerWidth / 2, 640);
+          width = wrapperWidth ? wrapperWidth : 640;
         }
         player.setSize(width, (width * 9) / 16);
       }
     });
   }, [player]);
 
+  useEffect(() => {
+    if (player && wrapperWidth) {
+      player.setSize(wrapperWidth, (wrapperWidth * 9) / 16);
+    }
+  }, [wrapperWidth]);
+
   return (
-    <div className="w-fit h-fit sm:rounded-xl sm:overflow-hidden">
+    <div className="w-full h-fit sm:rounded-xl sm:overflow-hidden">
       <Script src="https://www.youtube.com/iframe_api" />
-      <div ref={playerRef} id={`youtube-player`}>
+      <div id={`youtube-player`}>
         {player ? null : (
           <Skeleton className="w-[320px] h-[180px] mx-auto my-10" />
         )}

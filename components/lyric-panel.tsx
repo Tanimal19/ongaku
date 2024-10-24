@@ -1,18 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-import { Song } from "@/app/type";
-
-import { Skeleton } from "@/components/ui/skeleton";
+import { useEffect, useState, useContext } from "react";
 import LyricDisplay from "@/components/lyric-display";
-import Player from "@/components/player";
+import ControlPanel from "@/components/control-panel";
+import { songContext } from "@/components/main-panel";
 
-interface LyricPanelProps {
-  song: Song | null;
-}
+export default function LyricPanel() {
+  const s = useContext(songContext);
+  const [song] = s;
 
-export default function LyricPanel({ song }: LyricPanelProps) {
   const [sync, setSync] = useState<boolean>(false);
   const [translate, setTranslate] = useState<boolean>(false);
   const [romaji, setRomaji] = useState<boolean>(false);
@@ -24,32 +20,18 @@ export default function LyricPanel({ song }: LyricPanelProps) {
   }, [song?.videoId]);
 
   return (
-    <div className="w-full overflow-y-scroll flex-1 px-4 sm:w-1/2 sm:pl-20 sm:mt-8">
-      {song ? (
-        <LyricDisplay
-          song={song}
-          sync={sync}
-          translate={translate}
-          romaji={romaji}
-        />
-      ) : (
-        <div className="flex flex-col items-center gap-y-4 my-4">
-          <Skeleton className="h-6 w-52 sm:w-1/2" />
-          <Skeleton className="h-6 w-64 sm:w-1/2" />
-          <Skeleton className="h-6 w-52 sm:w-1/2" />
-          <Skeleton className="h-6 w-64 sm:w-1/2" />
-          <Skeleton className="h-6 w-52 sm:w-1/2" />
-        </div>
-      )}
+    <div className="w-full h-full flex-1 overflow-y-scroll px-4">
+      <LyricDisplay sync={sync} translate={translate} romaji={romaji} />
 
-      <Player
-        song={song}
-        sync={sync}
-        setSync={setSync}
-        translate={translate}
-        setTranslate={setTranslate}
-        romaji={romaji}
-        setRomaji={setRomaji}
+      <ControlPanel
+        props={{
+          sync,
+          setSync,
+          translate,
+          setTranslate,
+          romaji,
+          setRomaji,
+        }}
       />
     </div>
   );

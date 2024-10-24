@@ -8,7 +8,7 @@ export async function searchYoutubeVideo(query: string): Promise<YoutubeVideo[] 
     },
     body: JSON.stringify({
       "query": query,
-      "max_results": 6,
+      "max_results": 5,
     }),
   });
 
@@ -21,6 +21,28 @@ export async function searchYoutubeVideo(query: string): Promise<YoutubeVideo[] 
   const videos: YoutubeVideo[] = await response.json();
 
   return videos;
+}
+
+export async function getYoutubeVideo(videoId: string): Promise<YoutubeVideo | null> {
+  const response = await fetch("/api/get-youtube-video", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "videoId": videoId,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error(errorData.error || "Failed to get video info");
+    return null;
+  }
+
+  const video: YoutubeVideo = await response.json();
+
+  return video;
 }
 
 export async function getLyrics(track: string, artist: string, video: YoutubeVideo): Promise<Song | null> {

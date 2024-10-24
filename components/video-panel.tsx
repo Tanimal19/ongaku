@@ -2,20 +2,22 @@
 
 import { useState, useEffect, useContext } from "react";
 import { cn } from "@/lib/utils";
-
-import { Song } from "@/app/type";
-
-import { timeContext } from "@/components/main-panel";
 import YoutubeIframeComponent from "@/components/youtubeIframe";
+import { playerContext } from "@/components/main-panel";
+import { songContext } from "@/components/main-panel";
+import Icon from "./icon";
 
 interface VideoPanelProps {
-  song: Song | null;
+  wrapperWidth: number | null;
 }
 
-export default function VideoPanel({ song }: VideoPanelProps) {
+export default function VideoPanel({ wrapperWidth }: VideoPanelProps) {
+  const p = useContext(playerContext);
+  const [player] = p;
+  const s = useContext(songContext);
+  const [song] = s;
+
   const [hideIframe, setHideIframe] = useState<boolean>(false);
-  const p = useContext(timeContext);
-  const [player, _] = p;
 
   // load video when select
   useEffect(() => {
@@ -29,14 +31,17 @@ export default function VideoPanel({ song }: VideoPanelProps) {
   }, [song?.videoId]);
 
   return (
-    <div className="w-full h-fit sm:ml-10 sm:mt-8 sm:w-1/2 sm:fixed">
+    <div className="w-full sm:mx-6 h-fit sm:w-fit">
       <div
         className={cn(
           "transition-all duration-200 overflow-hidden",
           hideIframe ? "max-h-0" : "max-h-[1000px]"
         )}
       >
-        <YoutubeIframeComponent />
+        <YoutubeIframeComponent
+          // minus margin width
+          wrapperWidth={wrapperWidth ? wrapperWidth - 48 : null}
+        />
       </div>
       <div
         className="bg-transparent backdrop-blur-lg w-full inline-flex justify-center sm:hidden"
@@ -44,19 +49,14 @@ export default function VideoPanel({ song }: VideoPanelProps) {
           setHideIframe((prev) => !prev);
         }}
       >
-        <svg
+        <div
           className={cn(
             "transition-transform duration-200",
             hideIframe ? "rotate-180" : "rotate-0"
           )}
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          width="24px"
-          viewBox="0 -960 960 960"
-          fill="#000000"
         >
-          <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
-        </svg>
+          <Icon id="chevron-down" />
+        </div>
       </div>
     </div>
   );
