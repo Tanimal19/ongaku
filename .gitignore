@@ -39,4 +39,4 @@ __pycache__
 .conda/
 
 # credentials
-credentials.py
+/*/credentials.py

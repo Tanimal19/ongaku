@@ -3,7 +3,7 @@ import html
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import JSONFormatter
 from lyric.type import Song, YoutubeVideo
-from credentials import YOUTUBE_API_KEY
+from api.credentials import YOUTUBE_API_KEY
 
 
 class YoutubeAPI:
