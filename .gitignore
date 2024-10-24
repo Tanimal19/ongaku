@@ -33,7 +33,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-__pycache__
 
+# python
+__pycache__
 .conda/
-/*/credentials
+
+# credentials
+credentials.py
