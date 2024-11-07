@@ -72,7 +72,7 @@ export default function LyricDisplay({
           {song.syncedLyrics[song.lang] || song.plainLyrics[song.lang] ? (
             <div
               className={cn(
-                "flex flex-col w-full h-full sm:px-[20%] items-start font-bold",
+                "flex flex-col w-full h-full sm:px-[20%] items-start font-bold pb-40",
                 sync ? "text-stone-400" : "text-stone-950"
               )}
             >

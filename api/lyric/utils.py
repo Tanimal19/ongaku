@@ -88,40 +88,44 @@ def romanize_ko_lyric(lyric: str, isJson: bool = False) -> str:
 def match_lyric_and_translation(lyric: str, translation: str) -> str:
     lyric_lines = json.loads(lyric)
     translation_lines = json.loads(translation)
-    new_translation_lines = []
-
     error = 0.3
 
     if len(lyric_lines) == len(translation_lines):
-        return translation
+        return lyric, translation
+
+    base_is_lyric = len(lyric_lines) < len(translation_lines)
+
+    if base_is_lyric:
+        base = lyric_lines
+        match = translation_lines
+    else:
+        base = translation_lines
+        match = lyric_lines
+    new = []
 
     try:
         j = 0
 
         # find the first line matching the start time
-        while (
-            float(translation_lines[j]["start"])
-            < float(lyric_lines[0]["start"]) - error
-        ):
+        while float(match[j]["start"]) < float(base[0]["start"]) - error:
             j += 1
 
-        for i in range(0, len(lyric_lines)):
-            text = translation_lines[j]["text"]
+        for i in range(0, len(base)):
+            text = match[j]["text"]
             j += 1
 
-            if i + 1 < len(lyric_lines):
-                while (
-                    float(translation_lines[j]["start"])
-                    < float(lyric_lines[i + 1]["start"]) - error
-                ):
-                    text += "\u3000" + translation_lines[j]["text"]
+            if i + 1 < len(base):
+                while float(match[j]["start"]) < float(base[i + 1]["start"]) - error:
+                    text += "\u3000" + match[j]["text"]
                     j += 1
 
-            new_translation_lines.append(
-                {"start": lyric_lines[i]["start"], "text": text}
-            )
+            new.append({"start": base[i]["start"], "text": text})
 
-        return json.dumps(new_translation_lines, ensure_ascii=False)
+        if base_is_lyric:
+            return lyric, json.dumps(new, ensure_ascii=False)
+        else:
+            return json.dumps(new, ensure_ascii=False), translation
 
     except Exception as e:
-        return translation
+        print(e)
+        return lyric, translation

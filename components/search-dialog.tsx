@@ -22,6 +22,7 @@ import SearchResult from "@/components/search-result";
 import { playerContext } from "@/components/main-panel";
 import { songContext } from "@/components/main-panel";
 import Icon from "@/components/icon";
+import { Skeleton } from "./ui/skeleton";
 
 const formSchema = z.object({
   track: z.string().min(1),
@@ -41,6 +42,7 @@ export default function SearchDialog() {
   });
   const [videos, setVideos] = useState<YoutubeVideo[]>([]);
   const [vIndex, setVIndex] = useState<number | null>(null);
+  const [searching, setSearching] = useState<boolean>(false);
 
   // set form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,6 +56,7 @@ export default function SearchDialog() {
 
   // when form submit
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setSearching(true);
     setLyricInfo({
       track: values.track,
       artist: values.artist ? values.artist : "",
@@ -64,6 +67,7 @@ export default function SearchDialog() {
     ).then((videos: YoutubeVideo[] | null) => {
       if (videos) {
         setVideos(videos);
+        setSearching(false);
       }
     });
 
@@ -150,11 +154,19 @@ export default function SearchDialog() {
             </Button>
           </form>
         </Form>
-        {videos.length > 0 ? (
-          <DialogClose>
-            <SearchResult videos={videos} setVIndex={setVIndex} />
-          </DialogClose>
-        ) : null}
+        {searching ? (
+          <div className="flex flex-col items-center">
+            <Skeleton className="w-[60%] h-8" />
+          </div>
+        ) : (
+          <div className="w-full">
+            {videos.length > 0 ? (
+              <DialogClose className="w-full">
+                <SearchResult videos={videos} setVIndex={setVIndex} />
+              </DialogClose>
+            ) : null}
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

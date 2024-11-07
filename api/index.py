@@ -45,7 +45,6 @@ def get_lyrics():
 
     song: Song = get_lyric(track, artist, video)
     song = lyric_process(song)
-    print(song)
 
     if song is None:
         return jsonify({"error": "An error occurred during the request"}), 500
