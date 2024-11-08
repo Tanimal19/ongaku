@@ -1,6 +1,6 @@
 "use client";
 
-import { z } from "zod";
+import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useContext } from "react";
@@ -19,8 +19,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SearchResult from "@/components/search-result";
-import { playerContext } from "@/components/main-panel";
-import { songContext } from "@/components/main-panel";
+import {
+  playerContext,
+  songContext,
+  statusContext,
+} from "@/components/main-panel";
 import Icon from "@/components/icon";
 import { Skeleton } from "./ui/skeleton";
 
@@ -35,6 +38,8 @@ export default function SearchDialog() {
   const [player] = p;
   const s = useContext(songContext);
   const [, setSong] = s;
+  const st = useContext(statusContext);
+  const [status, setStatus] = st;
 
   const [lyricInfo, setLyricInfo] = useState({
     track: "",
@@ -42,7 +47,6 @@ export default function SearchDialog() {
   });
   const [videos, setVideos] = useState<YoutubeVideo[]>([]);
   const [vIndex, setVIndex] = useState<number | null>(null);
-  const [searching, setSearching] = useState<boolean>(false);
 
   // set form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -56,7 +60,7 @@ export default function SearchDialog() {
 
   // when form submit
   function onSubmit(values: z.infer<typeof formSchema>) {
-    setSearching(true);
+    setStatus("searching");
     setLyricInfo({
       track: values.track,
       artist: values.artist ? values.artist : "",
@@ -67,7 +71,7 @@ export default function SearchDialog() {
     ).then((videos: YoutubeVideo[] | null) => {
       if (videos) {
         setVideos(videos);
-        setSearching(false);
+        setStatus("fetching");
       }
     });
 
@@ -85,6 +89,7 @@ export default function SearchDialog() {
             setVideos([]);
             setSong(song);
             player?.stopVideo();
+            setStatus("display");
           }
         }
       );
@@ -154,7 +159,7 @@ export default function SearchDialog() {
             </Button>
           </form>
         </Form>
-        {searching ? (
+        {status == "searching" ? (
           <div className="flex flex-col items-center">
             <Skeleton className="w-[60%] h-8" />
           </div>

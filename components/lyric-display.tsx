@@ -4,8 +4,11 @@ import { cn } from "@/lib/utils";
 import { SyncLyricLine } from "@/app/type";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { playerContext } from "@/components/main-panel";
-import { songContext } from "@/components/main-panel";
+import {
+  playerContext,
+  songContext,
+  statusContext,
+} from "@/components/main-panel";
 
 interface LyricDisplayProps {
   sync: boolean;
@@ -22,9 +25,12 @@ export default function LyricDisplay({
   const [player] = p;
   const s = useContext(songContext);
   const [song] = s;
+  const st = useContext(statusContext);
+  const [status] = st;
 
   const [curIndex, setcurIndex] = useState<number>(0);
 
+  // update synced lyrics
   useEffect(() => {
     function calculateCurIndex(
       lyric: SyncLyricLine[],
@@ -67,7 +73,7 @@ export default function LyricDisplay({
 
   return (
     <div>
-      {song ? (
+      {status == "display" && song ? (
         <div>
           {song.syncedLyrics[song.lang] || song.plainLyrics[song.lang] ? (
             <div
@@ -129,12 +135,21 @@ export default function LyricDisplay({
           )}
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-y-4 my-4">
-          <Skeleton className="h-6 w-52 sm:w-1/2" />
-          <Skeleton className="h-6 w-64 sm:w-1/2" />
-          <Skeleton className="h-6 w-52 sm:w-1/2" />
-          <Skeleton className="h-6 w-64 sm:w-1/2" />
-          <Skeleton className="h-6 w-52 sm:w-1/2" />
+        <div>
+          {status == "fetching" ? (
+            <div className="flex flex-col items-center gap-y-4 my-4">
+              searching for lyrics...
+              <Skeleton className="h-6 w-52 sm:w-1/2" />
+              <Skeleton className="h-6 w-64 sm:w-1/2" />
+              <Skeleton className="h-6 w-52 sm:w-1/2" />
+              <Skeleton className="h-6 w-64 sm:w-1/2" />
+              <Skeleton className="h-6 w-52 sm:w-1/2" />
+            </div>
+          ) : (
+            <div className="w-full inline-flex justify-center font-bold text-xl">
+              search for a song first :)
+            </div>
+          )}
         </div>
       )}
     </div>

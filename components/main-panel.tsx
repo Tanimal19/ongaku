@@ -23,11 +23,17 @@ export const songContext = createContext<[Song | null, (_: any) => void]>([
   () => {},
 ]);
 
+export const statusContext = createContext<[string, (_: any) => void]>([
+  "idle",
+  () => {},
+]);
+
 export const mobileContext = createContext<boolean>(false);
 
 export default function MainPanel() {
-  const [song, setSong] = useState<Song | null>(null);
   const [player, setPlayer] = useState<YT.Player | null>(null);
+  const [song, setSong] = useState<Song | null>(null);
+  const [status, setStatus] = useState<string>("idle");
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const mediaQuery = useMediaQuery({ query: "(max-width: 640px)" });
 
@@ -40,47 +46,49 @@ export default function MainPanel() {
 
   return (
     <mobileContext.Provider value={isMobile}>
-      <playerContext.Provider value={[player, setPlayer]}>
-        <songContext.Provider value={[song, setSong]}>
-          {isMobile ? (
-            <div className="max-w-screen max-h-screen flex flex-col">
-              <div className="w-screen sticky top-0">
-                <Header />
-                <VideoPanel wrapperWidth={null} />
+      <statusContext.Provider value={[status, setStatus]}>
+        <playerContext.Provider value={[player, setPlayer]}>
+          <songContext.Provider value={[song, setSong]}>
+            {isMobile ? (
+              <div className="max-w-screen max-h-screen flex flex-col">
+                <div className="w-screen sticky top-0">
+                  <Header />
+                  <VideoPanel wrapperWidth={null} />
+                </div>
+                <LyricPanel />
               </div>
-              <LyricPanel />
-            </div>
-          ) : (
-            <div className="max-w-screen max-h-screen flex flex-col">
-              <Header />
-              <ResizablePanelGroup direction="horizontal" className="w-full">
-                <ResizablePanel
-                  className="mt-6"
-                  id="video-panel"
-                  onResize={() => {
-                    const videoPanel = getPanelElement("video-panel");
-                    if (videoPanel) setresizableWidth(videoPanel.offsetWidth);
-                  }}
-                  defaultSize={45}
-                  collapsible={true}
-                  minSize={20}
-                  collapsedSize={0}
-                >
-                  <VideoPanel wrapperWidth={resizableWidth} />
-                </ResizablePanel>
-                <ResizableHandle className="h-[80vh] border-2" withHandle />
-                <ResizablePanel
-                  className="!overflow-y-scroll mt-6"
-                  defaultSize={55}
-                  minSize={45}
-                >
-                  <LyricPanel />
-                </ResizablePanel>
-              </ResizablePanelGroup>
-            </div>
-          )}
-        </songContext.Provider>
-      </playerContext.Provider>
+            ) : (
+              <div className="max-w-screen max-h-screen flex flex-col">
+                <Header />
+                <ResizablePanelGroup direction="horizontal" className="w-full">
+                  <ResizablePanel
+                    className="mt-6"
+                    id="video-panel"
+                    onResize={() => {
+                      const videoPanel = getPanelElement("video-panel");
+                      if (videoPanel) setresizableWidth(videoPanel.offsetWidth);
+                    }}
+                    defaultSize={45}
+                    collapsible={true}
+                    minSize={20}
+                    collapsedSize={0}
+                  >
+                    <VideoPanel wrapperWidth={resizableWidth} />
+                  </ResizablePanel>
+                  <ResizableHandle className="h-[80vh] border-2" withHandle />
+                  <ResizablePanel
+                    className="!overflow-y-scroll mt-6"
+                    defaultSize={55}
+                    minSize={45}
+                  >
+                    <LyricPanel />
+                  </ResizablePanel>
+                </ResizablePanelGroup>
+              </div>
+            )}
+          </songContext.Provider>
+        </playerContext.Provider>
+      </statusContext.Provider>
     </mobileContext.Provider>
   );
 }
