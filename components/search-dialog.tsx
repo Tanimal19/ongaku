@@ -19,9 +19,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SearchResult from "@/components/search-result";
-import { playerContext } from "@/components/main-panel";
-import { songContext } from "@/components/main-panel";
+import {
+  playerContext,
+  songContext,
+  statusContext,
+} from "@/components/main-panel";
 import Icon from "@/components/icon";
+import { Skeleton } from "./ui/skeleton";
 
 const formSchema = z.object({
   apiKey: z.string().min(1),
@@ -35,6 +39,8 @@ export default function SearchDialog() {
   const [player] = p;
   const s = useContext(songContext);
   const [, setSong] = s;
+  const st = useContext(statusContext);
+  const [status, setStatus] = st;
 
   const [lyricInfo, setLyricInfo] = useState({
     track: "",
@@ -57,6 +63,7 @@ export default function SearchDialog() {
 
   // when form submit
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setStatus("searching");
     setLyricInfo({
       track: values.track,
       artist: values.artist ? values.artist : "",
@@ -70,6 +77,7 @@ export default function SearchDialog() {
     ).then((videos: YoutubeVideo[] | null) => {
       if (videos) {
         setVideos(videos);
+        setStatus("fetching");
       }
     });
 
@@ -87,6 +95,7 @@ export default function SearchDialog() {
             setVideos([]);
             setSong(song);
             player?.stopVideo();
+            setStatus("display");
           }
         }
       );
@@ -171,11 +180,19 @@ export default function SearchDialog() {
             </Button>
           </form>
         </Form>
-        {videos.length > 0 ? (
-          <DialogClose>
-            <SearchResult videos={videos} setVIndex={setVIndex} />
-          </DialogClose>
-        ) : null}
+        {status == "searching" ? (
+          <div className="flex flex-col items-center">
+            <Skeleton className="w-[60%] h-8" />
+          </div>
+        ) : (
+          <div className="w-full">
+            {videos.length > 0 ? (
+              <DialogClose className="w-full">
+                <SearchResult videos={videos} setVIndex={setVIndex} />
+              </DialogClose>
+            ) : null}
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
