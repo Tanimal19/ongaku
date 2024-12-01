@@ -132,39 +132,39 @@ function LyricToggle({ props }: ControlPanelProps) {
   const [player] = p;
   const s = useContext(songContext);
   const [song] = s;
-  const [changeOffset, setChangeOffset] = useState<boolean>(false);
+  // const [changeOffset, setChangeOffset] = useState<boolean>(false);
 
-  useEffect(() => {
-    setChangeOffset(false);
-  }, [song?.videoId]);
+  // useEffect(() => {
+  //   setChangeOffset(false);
+  // }, [song?.videoId]);
 
-  // change offset
-  useEffect(() => {
-    if (changeOffset) {
-      player?.seekTo(0, true);
-      player?.playVideo();
-    } else {
-      if (player) {
-        const offset = player.getCurrentTime() - 0.5;
+  // // change offset
+  // useEffect(() => {
+  //   if (changeOffset) {
+  //     player?.seekTo(0, true);
+  //     player?.playVideo();
+  //   } else {
+  //     if (player) {
+  //       const offset = player.getCurrentTime() - 0.5;
 
-        if (offset >= 0 && song?.syncedLyrics[song.lang]) {
-          const prevOffset = parseFloat(
-            song.syncedLyrics[song.lang][0]["start"]
-          );
+  //       if (offset >= 0 && song?.syncedLyrics[song.lang]) {
+  //         const prevOffset = parseFloat(
+  //           song.syncedLyrics[song.lang][0]["start"]
+  //         );
 
-          song.syncedLyrics[song.lang].forEach((line) => {
-            line["start"] = (
-              parseFloat(line["start"]) -
-              prevOffset +
-              offset
-            ).toString();
-          });
+  //         song.syncedLyrics[song.lang].forEach((line) => {
+  //           line["start"] = (
+  //             parseFloat(line["start"]) -
+  //             prevOffset +
+  //             offset
+  //           ).toString();
+  //         });
 
-          player.pauseVideo();
-        }
-      }
-    }
-  }, [changeOffset]);
+  //         player.pauseVideo();
+  //       }
+  //     }
+  //   }
+  // }, [changeOffset]);
 
   return (
     <div className="w-fit flex flex-row gap-x-1">
@@ -205,7 +205,7 @@ function LyricToggle({ props }: ControlPanelProps) {
       >
         <Icon id="translate" />
       </Toggle>
-      <Toggle
+      {/* <Toggle
         size="sm"
         aria-label="offset"
         disabled={!song || !props.sync}
@@ -218,7 +218,7 @@ function LyricToggle({ props }: ControlPanelProps) {
         <div className="z-50 w-[320px] flex flex-col justify-center items-center fixed bg-zinc-100/50 backdrop-blur-md rounded-md p-2 shadow-md -translate-y-[80px] -translate-x-[120px]">
           <strong>請在聽到第一句歌詞時再按一次校正按鈕</strong>
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

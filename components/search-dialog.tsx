@@ -28,7 +28,6 @@ import Icon from "@/components/icon";
 import { Skeleton } from "./ui/skeleton";
 
 const formSchema = z.object({
-  apiKey: z.string().min(1),
   track: z.string().min(1),
   artist: z.string().optional(),
   addition: z.string().optional(),
@@ -48,13 +47,11 @@ export default function SearchDialog() {
   });
   const [videos, setVideos] = useState<YoutubeVideo[]>([]);
   const [vIndex, setVIndex] = useState<number | null>(null);
-  const [apiKey, setApiKey] = useState<string | null>(null);
 
   // set form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      apiKey: "",
       track: "",
       artist: "",
       addition: "",
@@ -69,16 +66,15 @@ export default function SearchDialog() {
       artist: values.artist ? values.artist : "",
     });
 
-    setApiKey(values.apiKey);
-
     searchYoutubeVideo(
-      values.apiKey,
       `${values.track} ${values.artist} ${values.addition}`
     ).then((videos: YoutubeVideo[] | null) => {
       if (videos) {
         setVideos(videos);
-        setStatus("fetching");
+      } else {
+        setVideos([]);
       }
+      setStatus("fetching");
     });
 
     form.reset();
@@ -121,21 +117,6 @@ export default function SearchDialog() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-y-2 items-center w-full"
           >
-            <FormField
-              control={form.control}
-              name="apiKey"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    {apiKey ? (
-                      <Input placeholder={apiKey} {...field} />
-                    ) : (
-                      <Input placeholder="YOUTUBE API KEY" {...field} />
-                    )}
-                  </FormControl>
-                </FormItem>
-              )}
-            />
             <div className="flex flex-col sm:flex-row gap-2">
               <FormField
                 control={form.control}
@@ -185,11 +166,17 @@ export default function SearchDialog() {
             <Skeleton className="w-[60%] h-8" />
           </div>
         ) : (
-          <div className="w-full">
-            {videos.length > 0 ? (
-              <DialogClose className="w-full">
-                <SearchResult videos={videos} setVIndex={setVIndex} />
-              </DialogClose>
+          <div>
+            {status == "fetching" ? (
+              <div className="w-full">
+                {videos.length > 0 ? (
+                  <DialogClose className="w-full">
+                    <SearchResult videos={videos} setVIndex={setVIndex} />
+                  </DialogClose>
+                ) : (
+                  <div>搜尋出了點問題</div>
+                )}
+              </div>
             ) : null}
           </div>
         )}

@@ -1,13 +1,12 @@
 import { Song, YoutubeVideo } from "@/app/type"
 
-export async function searchYoutubeVideo(query: string, YoutubAPIKey: string): Promise<YoutubeVideo[] | null> {
+export async function searchYoutubeVideo(query: string): Promise<YoutubeVideo[] | null> {
   const response = await fetch("/api/search-youtube", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      "key": YoutubAPIKey,
       "query": query,
       "max_results": 5,
     }),
@@ -24,14 +23,13 @@ export async function searchYoutubeVideo(query: string, YoutubAPIKey: string): P
   return videos;
 }
 
-export async function getYoutubeVideo(videoId: string, YoutubAPIKey: string): Promise<YoutubeVideo | null> {
+export async function getYoutubeVideo(videoId: string): Promise<YoutubeVideo | null> {
   const response = await fetch("/api/get-youtube-video", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      "key": YoutubAPIKey,
       "videoId": videoId,
     }),
   });

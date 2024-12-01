@@ -2,18 +2,25 @@ from flask import Flask, request, jsonify
 from lyric.provider.youtube import YoutubeAPI, YoutubeVideo
 from lyric.type import Song, YoutubeVideo
 from lyric.lyricAPI import get_lyric, lyric_process
+import os
 
 app = Flask(__name__)
+
+if os.environ.get("FLASK_DEBUG") == "1":
+    print("development")
+    from credentials import YOUTUBE_API_KEY
+
+else:
+    print("production")
+    YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
 
 
 @app.route("/api/search-youtube", methods=["POST"])
 def search_youtube():
     data = request.get_json()
-    api_key = data.get("key")
+    api_key = YOUTUBE_API_KEY
     query = data.get("query")
     max_results = data.get("max_results")
-
-    print(api_key)
 
     videos: list[YoutubeVideo] = YoutubeAPI.search_video(api_key, query, max_results)
 
@@ -28,7 +35,7 @@ def search_youtube():
 @app.route("/api/get-youtube-video", methods=["POST"])
 def get_youtube_video():
     data = request.get_json()
-    api_key = data.get("key")
+    api_key = YOUTUBE_API_KEY
     video_id = data.get("video_id")
     videos: list[YoutubeVideo] = YoutubeAPI.search_video(api_key, video_id, 1)
     video = videos[0]
@@ -44,11 +51,12 @@ def get_youtube_video():
 @app.route("/api/get-lyrics", methods=["POST"])
 def get_lyrics():
     data = request.get_json()
+    api_key = YOUTUBE_API_KEY
     track: str = data.get("track")
     artist: str = data.get("artist")
     video: YoutubeVideo = YoutubeVideo.from_dict(data.get("video"))
 
-    song: Song = get_lyric(track, artist, video)
+    song: Song = get_lyric(track, artist, video, api_key)
     song = lyric_process(song)
 
     if song is None:
