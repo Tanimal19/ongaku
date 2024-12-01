@@ -9,9 +9,13 @@ app = Flask(__name__)
 @app.route("/api/search-youtube", methods=["POST"])
 def search_youtube():
     data = request.get_json()
+    api_key = data.get("key")
     query = data.get("query")
     max_results = data.get("max_results")
-    videos: list[YoutubeVideo] = YoutubeAPI.search_video(query, max_results)
+
+    print(api_key)
+
+    videos: list[YoutubeVideo] = YoutubeAPI.search_video(api_key, query, max_results)
 
     if videos is None:
         return jsonify({"error": "An error occurred during the request"}), 500
@@ -24,8 +28,9 @@ def search_youtube():
 @app.route("/api/get-youtube-video", methods=["POST"])
 def get_youtube_video():
     data = request.get_json()
+    api_key = data.get("key")
     video_id = data.get("video_id")
-    videos: list[YoutubeVideo] = YoutubeAPI.search_video(video_id, 1)
+    videos: list[YoutubeVideo] = YoutubeAPI.search_video(api_key, video_id, 1)
     video = videos[0]
 
     if video is None:

@@ -3,16 +3,15 @@ import html
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import JSONFormatter
 from lyric.type import Song, YoutubeVideo
-from api.credentials import YOUTUBE_API_KEY
 
 
 class YoutubeAPI:
-    def get_channel_description(channel_id: str) -> str | None:
+    def get_channel_description(api_key: str, channel_id: str) -> str | None:
         url = "https://www.googleapis.com/youtube/v3/channels"
         params = {
             "part": "snippet",
             "id": channel_id,
-            "key": YOUTUBE_API_KEY,
+            "key": api_key,
         }
 
         try:
@@ -27,7 +26,9 @@ class YoutubeAPI:
             print(e)
             return None
 
-    def search_video(query: str, max_results: int = 1) -> list[YoutubeVideo] | None:
+    def search_video(
+        api_key: str, query: str, max_results: int = 1
+    ) -> list[YoutubeVideo] | None:
         url = "https://www.googleapis.com/youtube/v3/search"
         params = {
             "part": "snippet",
@@ -37,7 +38,7 @@ class YoutubeAPI:
             "safeSearch": "strict",
             "type": "video",
             "maxResults": max_results,
-            "key": YOUTUBE_API_KEY,
+            "key": api_key,
         }
 
         try:

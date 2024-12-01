@@ -10,13 +10,15 @@ from lyric.utils import (
 )
 
 
-def get_lyric(track: str, artist: str, video: YoutubeVideo) -> Song | None:
+def get_lyric(
+    track: str, artist: str, video: YoutubeVideo, api_key: str
+) -> Song | None:
     song = Song(track, artist, video.video_id)
 
     # detect language from video title, description, channel description, and synced lyric (if have)
     context = video.title + video.description
 
-    channel_description = YoutubeAPI.get_channel_description(video.channel_id)
+    channel_description = YoutubeAPI.get_channel_description(api_key, video.channel_id)
     if channel_description is not None:
         context += channel_description
 
