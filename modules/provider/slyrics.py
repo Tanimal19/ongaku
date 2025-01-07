@@ -1,6 +1,6 @@
 import syncedlyrics
-from lyric.type import Song
-from lyric.utils import lrc_to_json
+from modules.type import Song
+from modules.utils import lrc_to_json
 
 
 class SyncLyricsAPI:

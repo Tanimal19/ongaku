@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from lyric.type import Song
+from modules.type import Song
 
 
 class JLyricsAPI:

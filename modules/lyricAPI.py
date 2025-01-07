@@ -1,8 +1,8 @@
-from lyric.type import Song, YoutubeVideo
-from lyric.provider.youtube import YoutubeAPI, YoutubeVideo
-from lyric.provider.slyrics import SyncLyricsAPI
-from lyric.provider.jlyrics import JLyricsAPI
-from lyric.utils import (
+from modules.type import Song, YoutubeVideo
+from modules.provider.youtube import YoutubeAPI, YoutubeVideo
+from modules.provider.slyrics import SyncLyricsAPI
+from modules.provider.jlyrics import JLyricsAPI
+from modules.utils import (
     detect_language,
     match_lyric_and_translation,
 )

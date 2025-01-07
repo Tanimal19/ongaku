@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-from lyric.provider.youtube import YoutubeAPI, YoutubeVideo
-from lyric.type import Song, YoutubeVideo
-from lyric.lyricAPI import get_lyric, lyric_process
+from modules.provider.youtube import YoutubeAPI, YoutubeVideo
+from modules.type import Song, YoutubeVideo
+from modules.lyricAPI import get_lyric, lyric_process
 import os
 
 app = Flask(__name__)

@@ -2,7 +2,7 @@ import requests
 import html
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import JSONFormatter
-from lyric.type import Song, YoutubeVideo
+from modules.type import Song, YoutubeVideo
 
 
 class YoutubeAPI:
