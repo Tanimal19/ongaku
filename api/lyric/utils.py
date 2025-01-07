@@ -1,7 +1,5 @@
 import re
 import json
-import cutlet
-from korean_romanizer.romanizer import Romanizer
 
 
 def detect_language(text: str):
@@ -41,48 +39,6 @@ def lrc_to_json(lrc_lyric: str) -> str:
         lyric.append({"start": start_time, "text": lyric_text})
 
     return json.dumps(lyric, ensure_ascii=False)
-
-
-def romanize_ja_lyric(lyric: str, isJson: bool = False) -> str:
-    katsu = cutlet.Cutlet()
-
-    if not isJson:
-        lyric_lines = lyric.split("\n")
-
-        for i, line in enumerate(lyric_lines):
-            lyric_lines[i] = katsu.romaji(line)
-
-        return "\n".join(lyric_lines)
-    else:
-        lyric_json = json.loads(lyric)
-
-        katsu = cutlet.Cutlet()
-        for entry in lyric_json:
-            text = entry["text"]
-            entry["text"] = katsu.romaji(text)
-
-        return json.dumps(lyric_json, ensure_ascii=False)
-
-
-def romanize_ko_lyric(lyric: str, isJson: bool = False) -> str:
-    if not isJson:
-        lyric_lines = lyric.split("\n")
-
-        for i, line in enumerate(lyric_lines):
-            r = Romanizer(line)
-            lyric_lines[i] = r.romanize()
-
-        return "\n".join(lyric_lines)
-    else:
-        lyric_json = json.loads(lyric)
-
-        katsu = cutlet.Cutlet()
-        for entry in lyric_json:
-            text = entry["text"]
-            r = Romanizer(text)
-            entry["text"] = r.romanize()
-
-        return json.dumps(lyric_json, ensure_ascii=False)
 
 
 def match_lyric_and_translation(lyric: str, translation: str) -> str:

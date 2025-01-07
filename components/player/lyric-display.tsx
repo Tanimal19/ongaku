@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import { cn } from "@/lib/utils";
 
-import { SyncLyricLine } from "@/app/type";
+import { SyncLyricLine } from "@/lib/type";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   playerContext,
   songContext,
   statusContext,
-} from "@/components/main-panel";
+} from "@/components/player/main-panel";
 
 interface LyricDisplayProps {
   sync: boolean;
@@ -147,7 +147,7 @@ export default function LyricDisplay({
             </div>
           ) : (
             <div className="w-full inline-flex justify-center font-bold text-xl">
-              search for a song first :)
+              用右上角的搜尋功能找一下歌吧 :)
             </div>
           )}
         </div>

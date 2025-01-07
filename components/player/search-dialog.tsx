@@ -4,8 +4,8 @@ import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useContext } from "react";
-import { Song, YoutubeVideo } from "@/app/type";
-import { searchYoutubeVideo, getLyrics } from "@/app/api";
+import { Song, YoutubeVideo } from "@/lib/type";
+import { searchYoutubeVideo, getLyrics } from "@/lib/api";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import {
   Dialog,
@@ -18,14 +18,14 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import SearchResult from "@/components/search-result";
+import SearchResult from "@/components/player/search-result";
 import {
   playerContext,
   songContext,
   statusContext,
-} from "@/components/main-panel";
+} from "@/components/player/main-panel";
 import Icon from "@/components/icon";
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "../ui/skeleton";
 
 const formSchema = z.object({
   track: z.string().min(1),

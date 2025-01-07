@@ -3,7 +3,7 @@
 import Script from "next/script";
 import { useEffect, useContext } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { playerContext } from "@/components/main-panel";
+import { playerContext } from "@/components/player/main-panel";
 
 interface YoutubeIframeComponentProps {
   wrapperWidth: number | null;
@@ -15,7 +15,7 @@ export default function YoutubeIframeComponent({
   const p = useContext(playerContext);
   const [player, setPlayer] = p;
 
-  // Create empty player (only once)
+  // Create empty player
   useEffect(() => {
     function onYouTubeIframeAPIReady() {
       const newPlayer = new YT.Player(`youtube-player`, {

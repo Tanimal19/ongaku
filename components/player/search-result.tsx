@@ -1,4 +1,4 @@
-import { YoutubeVideo } from "@/app/type";
+import { YoutubeVideo } from "@/lib/type";
 
 interface SearchResultPanelProps {
   videos: YoutubeVideo[];

@@ -3,16 +3,14 @@
 import { useState, createContext, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { getPanelElement } from "react-resizable-panels";
-import Image from "next/image";
-import { Song } from "@/app/type";
+import { Song } from "@/lib/type";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import LyricPanel from "@/components/lyric-panel";
-import VideoPanel from "@/components/video-panel";
-import SearchDialog from "@/components/search-dialog";
+import LyricPanel from "@/components/player/lyric-panel";
+import VideoPanel from "@/components/player/video-panel";
 
 export const playerContext = createContext<
   [YT.Player | null, (_: YT.Player) => void]
@@ -52,14 +50,12 @@ export default function MainPanel() {
             {isMobile ? (
               <div className="max-w-screen max-h-screen flex flex-col">
                 <div className="w-screen sticky top-0">
-                  <Header />
                   <VideoPanel wrapperWidth={null} />
                 </div>
                 <LyricPanel />
               </div>
             ) : (
               <div className="max-w-screen max-h-screen flex flex-col">
-                <Header />
                 <ResizablePanelGroup direction="horizontal" className="w-full">
                   <ResizablePanel
                     className="mt-6"
@@ -90,14 +86,5 @@ export default function MainPanel() {
         </playerContext.Provider>
       </statusContext.Provider>
     </mobileContext.Provider>
-  );
-}
-
-function Header() {
-  return (
-    <div className="bg-zinc-50 w-full h-fit py-2 px-6 flex flex-row justify-between items-center border-b">
-      <Image src="/logo-full.svg" width={120} height={40} alt="logo" />
-      <SearchDialog />
-    </div>
   );
 }

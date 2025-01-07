@@ -1,4 +1,4 @@
-import { Song, YoutubeVideo } from "@/app/type"
+import { Song, YoutubeVideo } from "@/lib/type"
 
 export async function searchYoutubeVideo(query: string): Promise<YoutubeVideo[] | null> {
   const response = await fetch("/api/search-youtube", {

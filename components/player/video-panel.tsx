@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useContext } from "react";
 import { cn } from "@/lib/utils";
-import YoutubeIframeComponent from "@/components/youtubeIframe";
-import { playerContext } from "@/components/main-panel";
-import { songContext } from "@/components/main-panel";
-import Icon from "./icon";
+import YoutubeIframeComponent from "@/components/player/youtubeIframe";
+import { playerContext } from "@/components/player/main-panel";
+import { songContext } from "@/components/player/main-panel";
+import Icon from "../icon";
 
 interface VideoPanelProps {
   wrapperWidth: number | null;

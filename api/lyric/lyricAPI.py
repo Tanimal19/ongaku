@@ -4,8 +4,6 @@ from lyric.provider.slyrics import SyncLyricsAPI
 from lyric.provider.jlyrics import JLyricsAPI
 from lyric.utils import (
     detect_language,
-    romanize_ja_lyric,
-    romanize_ko_lyric,
     match_lyric_and_translation,
 )
 
@@ -76,18 +74,7 @@ def lyric_process(song: Song) -> Song:
             )
         )
 
-    # romanize lyric
-    if "ja" in song.synced_lyrics.keys():
-        song.add_lyric("roma", romanize_ja_lyric(song.synced_lyrics["ja"], True), True)
-    elif "ja" in song.plain_lyrics.keys():
-        song.add_lyric("roma", romanize_ja_lyric(song.plain_lyrics["ja"], False), False)
-
-    if "ko" in song.synced_lyrics.keys():
-        song.add_lyric("roma", romanize_ko_lyric(song.synced_lyrics["ko"], True), True)
-    elif "ko" in song.plain_lyrics.keys():
-        song.add_lyric("roma", romanize_ko_lyric(song.plain_lyrics["ko"], False), False)
-
-    if "roma" in song.synced_lyrics.keys() or "roma" in song.plain_lyrics.keys():
-        song.support_romaji = True
+    # romanize lyric - currently don't support since romanize package is too large
+    song.support_romaji = False
 
     return song

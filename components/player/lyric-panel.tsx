@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState, useContext } from "react";
-import LyricDisplay from "@/components/lyric-display";
-import ControlPanel from "@/components/control-panel";
-import { songContext } from "@/components/main-panel";
+import LyricDisplay from "@/components/player/lyric-display";
+import ControlPanel from "@/components/player/control-panel";
+import { songContext } from "@/components/player/main-panel";
 
 export default function LyricPanel() {
   const s = useContext(songContext);
