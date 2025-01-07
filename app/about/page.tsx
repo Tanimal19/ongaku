@@ -112,6 +112,18 @@ function Content() {
             <p>
               歌詞資源皆來自網路，本網站不擁有任何歌詞資源，也不對歌詞內容負責。
             </p>
+            <p className="text-red-500">
+              很遺憾，目前從 youtube 影片抓取歌詞的功能並不能在 production
+              環境上運行，因為 youtube 不知為何會阻擋來自 Vercel IP 的請求 (
+              <a
+                className="text-cyan-600 hover:opacity-70"
+                href="https://github.com/jdepoix/youtube-transcript-api/issues/303"
+                target="_blank"
+              >
+                github issue
+              </a>
+              )，所以如果你想要使用這個功能，可以 clone 這個專案到本地運行。
+            </p>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
