@@ -84,7 +84,5 @@ export async function getLyrics(track: string, artist: string, video: YoutubeVid
 
   song.title = video.title;
 
-  console.log(song);
-
   return song as Song;
 }
