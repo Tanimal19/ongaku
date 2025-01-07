@@ -1,18 +1,20 @@
 from flask import Flask, request, jsonify
-from modules.provider.youtube import YoutubeAPI, YoutubeVideo
-from modules.type import Song, YoutubeVideo
-from modules.lyricAPI import get_lyric, lyric_process
 import os
+import sys
 
 app = Flask(__name__)
 
 if os.environ.get("FLASK_DEBUG") == "1":
     print("development")
-    from credentials import YOUTUBE_API_KEY
-
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+    from modules.credentials import YOUTUBE_API_KEY
 else:
     print("production")
     YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
+
+from modules.provider.youtube import YoutubeAPI, YoutubeVideo
+from modules.type import Song, YoutubeVideo
+from modules.lyricAPI import get_lyric, lyric_process
 
 
 @app.route("/api/search-youtube", methods=["POST"])
