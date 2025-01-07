@@ -74,6 +74,15 @@ function Content() {
               影片本身的字幕抓取，如果沒有找到則會從
               <a
                 className="text-cyan-600 hover:opacity-70"
+                href="https://lrclib.net/"
+                target="_blank"
+              >
+                {" "}
+                Lrclib{" "}
+              </a>
+              和
+              <a
+                className="text-cyan-600 hover:opacity-70"
                 href="https://www.musixmatch.com/"
                 target="_blank"
               >
