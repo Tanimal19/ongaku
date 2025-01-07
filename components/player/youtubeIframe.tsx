@@ -3,7 +3,7 @@
 import Script from "next/script";
 import { useEffect, useContext } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { playerContext } from "@/app/page";
+import { playerContext } from "@/components/player/main-panel";
 
 interface YoutubeIframeComponentProps {
   wrapperWidth: number | null;

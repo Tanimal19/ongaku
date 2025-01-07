@@ -8,7 +8,11 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { mobileContext, playerContext, songContext } from "@/app/page";
+import {
+  mobileContext,
+  playerContext,
+  songContext,
+} from "@/components/player/main-panel";
 import Icon from "@/components/icon";
 
 interface ControlPanelProps {

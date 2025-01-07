@@ -19,7 +19,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SearchResult from "@/components/player/search-result";
-import { playerContext, songContext, statusContext } from "@/app/page";
+import {
+  playerContext,
+  songContext,
+  statusContext,
+} from "@/components/player/main-panel";
 import Icon from "@/components/icon";
 import { Skeleton } from "../ui/skeleton";
 
