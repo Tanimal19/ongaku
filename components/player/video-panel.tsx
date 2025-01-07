@@ -3,8 +3,8 @@
 import { useState, useEffect, useContext } from "react";
 import { cn } from "@/lib/utils";
 import YoutubeIframeComponent from "@/components/player/youtubeIframe";
-import { playerContext } from "@/components/player/main-panel";
-import { songContext } from "@/components/player/main-panel";
+import { playerContext } from "@/app/page";
+import { songContext } from "@/app/page";
 import Icon from "../icon";
 
 interface VideoPanelProps {

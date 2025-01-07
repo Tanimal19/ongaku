@@ -3,7 +3,7 @@
 import { useEffect, useState, useContext } from "react";
 import LyricDisplay from "@/components/player/lyric-display";
 import ControlPanel from "@/components/player/control-panel";
-import { songContext } from "@/components/player/main-panel";
+import { songContext } from "@/app/page";
 
 export default function LyricPanel() {
   const s = useContext(songContext);

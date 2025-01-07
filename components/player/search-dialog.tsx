@@ -1,6 +1,6 @@
 "use client";
 
-import { set, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useContext } from "react";
@@ -19,11 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SearchResult from "@/components/player/search-result";
-import {
-  playerContext,
-  songContext,
-  statusContext,
-} from "@/components/player/main-panel";
+import { playerContext, songContext, statusContext } from "@/app/page";
 import Icon from "@/components/icon";
 import { Skeleton } from "../ui/skeleton";
 
@@ -107,8 +103,9 @@ export default function SearchDialog() {
         <DialogHeader className="my-4">
           <DialogTitle>Youtube 歌曲搜尋</DialogTitle>
           <DialogDescription>
-            <p>請儘量用原文名稱來提高歌詞抓取的準確性，</p>
-            <p>例如用「夜に駆ける」而不是「yorunikakeru」</p>
+            <span>請儘量用原文名稱來提高歌詞抓取的準確性，</span>
+            <br />
+            <span>例如用「夜に駆ける」而不是「yorunikakeru」</span>
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

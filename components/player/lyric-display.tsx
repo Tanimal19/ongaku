@@ -4,11 +4,7 @@ import { cn } from "@/lib/utils";
 import { SyncLyricLine } from "@/lib/type";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  playerContext,
-  songContext,
-  statusContext,
-} from "@/components/player/main-panel";
+import { playerContext, songContext, statusContext } from "@/app/page";
 
 interface LyricDisplayProps {
   sync: boolean;
