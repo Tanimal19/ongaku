@@ -25,15 +25,24 @@ export default function About() {
 function Content() {
   return (
     <div className="max-w-lg px-4 pt-4 mx-auto">
-      <div className="flex flex-col items-center gap-8 my-10">
+      <div className="flex flex-col gap-8 my-10">
         <Image src="/logo-full.svg" width={240} height={80} alt="logo" />
         <p>
           Ongaku 是一個簡單的音樂播放網站，可以播放 youtube 上的任何影片。同時
           Ongaku
           會自動在網路上搜尋相關歌詞以及翻譯，讓你在享受音樂的同時查看歌詞。
           <br />
+          網站開源並使用 MIT License:{" "}
+          <a
+            className="text-cyan-600 hover:opacity-70"
+            href="https://github.com/Tanimal19/ongaku"
+            target="_blank"
+          >
+            Github Repo{" "}
+          </a>
+          <br />
           <span className="text-red-600">
-            目前網站還在開發中，主要提供 DEMO、試玩的用途
+            ※目前還在開發中，網站主要提供 DEMO、試玩的用途
           </span>
         </p>
       </div>
