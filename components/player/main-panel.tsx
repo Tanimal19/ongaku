@@ -51,7 +51,7 @@ export default function MainPanel() {
       <playerContext.Provider value={[player, setPlayer]}>
         <songContext.Provider value={[song, setSong]}>
           <statusContext.Provider value={[status, setStatus]}>
-            <div className="h-screen">
+            <div className="h-screen flex flex-col">
               <div className="bg-zinc-50 w-full h-12 py-2 px-6 flex flex-row justify-between items-center border-b">
                 <Link href="/">
                   <Image
@@ -71,45 +71,50 @@ export default function MainPanel() {
                   </Link>
                 </div>
               </div>
-              {isMobile ? (
-                <div className="max-w-screen max-h-full flex flex-col">
-                  <div className="w-screen sticky top-0">
-                    <VideoPanel wrapperWidth={null} />
+              <main className="flex-1 overflow-auto">
+                {isMobile ? (
+                  <div className="max-w-screen max-h-full flex flex-col">
+                    <div className="w-screen sticky top-0">
+                      <VideoPanel wrapperWidth={null} />
+                    </div>
+                    <LyricPanel />
                   </div>
-                  <LyricPanel />
-                </div>
-              ) : (
-                <div className="max-w-screen max-h-full flex flex-col">
-                  <ResizablePanelGroup
-                    direction="horizontal"
-                    className="w-full"
-                  >
-                    <ResizablePanel
-                      className="mt-6"
-                      id="video-panel"
-                      onResize={() => {
-                        const videoPanel = getPanelElement("video-panel");
-                        if (videoPanel)
-                          setresizableWidth(videoPanel.offsetWidth);
-                      }}
-                      defaultSize={45}
-                      collapsible={true}
-                      minSize={20}
-                      collapsedSize={0}
+                ) : (
+                  <div className="max-w-screen max-h-full flex flex-col">
+                    <ResizablePanelGroup
+                      direction="horizontal"
+                      className="w-full"
                     >
-                      <VideoPanel wrapperWidth={resizableWidth} />
-                    </ResizablePanel>
-                    <ResizableHandle className="h-[80vh] border-2" withHandle />
-                    <ResizablePanel
-                      className="!overflow-y-scroll mt-6"
-                      defaultSize={55}
-                      minSize={45}
-                    >
-                      <LyricPanel />
-                    </ResizablePanel>
-                  </ResizablePanelGroup>
-                </div>
-              )}
+                      <ResizablePanel
+                        className="mt-6"
+                        id="video-panel"
+                        onResize={() => {
+                          const videoPanel = getPanelElement("video-panel");
+                          if (videoPanel)
+                            setresizableWidth(videoPanel.offsetWidth);
+                        }}
+                        defaultSize={45}
+                        collapsible={true}
+                        minSize={20}
+                        collapsedSize={0}
+                      >
+                        <VideoPanel wrapperWidth={resizableWidth} />
+                      </ResizablePanel>
+                      <ResizableHandle
+                        className="h-[100vh] border-2"
+                        withHandle
+                      />
+                      <ResizablePanel
+                        className="!overflow-y-scroll mt-6"
+                        defaultSize={55}
+                        minSize={45}
+                      >
+                        <LyricPanel />
+                      </ResizablePanel>
+                    </ResizablePanelGroup>
+                  </div>
+                )}
+              </main>
             </div>
           </statusContext.Provider>
         </songContext.Provider>
