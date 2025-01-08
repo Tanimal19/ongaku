@@ -51,60 +51,66 @@ export default function MainPanel() {
       <playerContext.Provider value={[player, setPlayer]}>
         <songContext.Provider value={[song, setSong]}>
           <statusContext.Provider value={[status, setStatus]}>
-            <div className="bg-zinc-50 w-full h-12 py-2 px-6 flex flex-row justify-between items-center border-b">
-              <Link href="/">
-                <Image
-                  src="/logo-full.svg"
-                  width={120}
-                  height={40}
-                  alt="logo"
-                />
-              </Link>
-              <div className="flex flex-row items-center gap-4">
-                <SearchDialog />
-                <Link href="/about">
-                  <Icon
-                    id="help"
-                    className="h-8 w-8 p-1 rounded-sm hover:bg-muted"
+            <div className="h-screen">
+              <div className="bg-zinc-50 w-full h-12 py-2 px-6 flex flex-row justify-between items-center border-b">
+                <Link href="/">
+                  <Image
+                    src="/logo-full.svg"
+                    width={120}
+                    height={40}
+                    alt="logo"
                   />
                 </Link>
-              </div>
-            </div>
-            {isMobile ? (
-              <div className="max-w-screen max-h-screen flex flex-col">
-                <div className="w-screen sticky top-0">
-                  <VideoPanel wrapperWidth={null} />
+                <div className="flex flex-row items-center gap-4">
+                  <SearchDialog />
+                  <Link href="/about">
+                    <Icon
+                      id="help"
+                      className="h-8 w-8 p-1 rounded-sm hover:bg-muted"
+                    />
+                  </Link>
                 </div>
-                <LyricPanel />
               </div>
-            ) : (
-              <div className="max-w-screen max-h-screen flex flex-col">
-                <ResizablePanelGroup direction="horizontal" className="w-full">
-                  <ResizablePanel
-                    className="mt-6"
-                    id="video-panel"
-                    onResize={() => {
-                      const videoPanel = getPanelElement("video-panel");
-                      if (videoPanel) setresizableWidth(videoPanel.offsetWidth);
-                    }}
-                    defaultSize={45}
-                    collapsible={true}
-                    minSize={20}
-                    collapsedSize={0}
+              {isMobile ? (
+                <div className="max-w-screen max-h-full flex flex-col">
+                  <div className="w-screen sticky top-0">
+                    <VideoPanel wrapperWidth={null} />
+                  </div>
+                  <LyricPanel />
+                </div>
+              ) : (
+                <div className="max-w-screen max-h-full flex flex-col">
+                  <ResizablePanelGroup
+                    direction="horizontal"
+                    className="w-full"
                   >
-                    <VideoPanel wrapperWidth={resizableWidth} />
-                  </ResizablePanel>
-                  <ResizableHandle className="h-[80vh] border-2" withHandle />
-                  <ResizablePanel
-                    className="!overflow-y-scroll mt-6"
-                    defaultSize={55}
-                    minSize={45}
-                  >
-                    <LyricPanel />
-                  </ResizablePanel>
-                </ResizablePanelGroup>
-              </div>
-            )}
+                    <ResizablePanel
+                      className="mt-6"
+                      id="video-panel"
+                      onResize={() => {
+                        const videoPanel = getPanelElement("video-panel");
+                        if (videoPanel)
+                          setresizableWidth(videoPanel.offsetWidth);
+                      }}
+                      defaultSize={45}
+                      collapsible={true}
+                      minSize={20}
+                      collapsedSize={0}
+                    >
+                      <VideoPanel wrapperWidth={resizableWidth} />
+                    </ResizablePanel>
+                    <ResizableHandle className="h-[80vh] border-2" withHandle />
+                    <ResizablePanel
+                      className="!overflow-y-scroll mt-6"
+                      defaultSize={55}
+                      minSize={45}
+                    >
+                      <LyricPanel />
+                    </ResizablePanel>
+                  </ResizablePanelGroup>
+                </div>
+              )}
+            </div>
           </statusContext.Provider>
         </songContext.Provider>
       </playerContext.Provider>
