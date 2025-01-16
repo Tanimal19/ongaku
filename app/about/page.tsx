@@ -52,7 +52,7 @@ function Content() {
           <AccordionContent className="text-gray-700 flex flex-col gap-2">
             <p>
               當初因為 MARUMARU
-              突然關站，讓我非常傷心，所以就想說要做一個類似的網站出來，並且在日文歌曲之上擴大到整個
+              突然關站，所以就想說要做一個類似的網站出來，並且在日文歌曲之上擴大到整個
               youtube
               上的音樂，才有了這個專案。順便也是練習一下自己前端開發的技術，不然我真的好爛
               :(
@@ -66,8 +66,7 @@ function Content() {
               >
                 MARUMARU{" "}
               </a>
-              復活而且功能也變多了！再次跪下感謝站長，不過我應該會繼續這個專案，至少也要做出一個
-              MVP
+              復活而且功能變多了！站長真的太神辣！
             </p>
           </AccordionContent>
         </AccordionItem>
