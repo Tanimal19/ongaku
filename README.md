@@ -12,3 +12,43 @@ demo video: https://youtu.be/W3OSHAKRem8
 
 ※目前還在開發中，網站主要提供 DEMO、試玩的用途  
 ※在 production 環境中有一些功能會受到限制，有興趣的人歡迎 clone 到本地使用
+
+## Project Structure
+```
+.
+├── api/
+│   ├── index.py
+│   └── requirements.txt
+├── app/
+├── component/
+│   ├── player/
+│   │   └── custom components
+│   ├── ui/
+│   │   └── shadcn components
+│   └── icon.tsx
+├── lib/
+│   └── utils for frontend
+├── modules/
+│   └── python modules for backend
+└── public/
+    └── svgs
+```
+
+## After you clone
+### install packages & modules
+```
+npm install
+pip -r requirements.txt
+```
+
+### set youtube api key
+create a `credentials.py` and modify this content:
+```py
+YOUTUBE_API_KEY = "YOUR-YOUTUBE-API-KEY"
+```
+
+### to run dev server
+```
+npm run dev
+```
+
