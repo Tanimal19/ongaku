@@ -43,7 +43,7 @@ pip install -r requirements.txt
 ```
 
 ### set youtube api key
-inside `module/` directory, create a `credentials.py` with this content:
+inside `modules/` directory, create a `credentials.py` with this content:
 ```py
 YOUTUBE_API_KEY = "YOUR-YOUTUBE-API-KEY"
 ```
