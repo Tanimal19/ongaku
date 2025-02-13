@@ -38,7 +38,8 @@ demo video: https://youtu.be/W3OSHAKRem8
 ### install packages & modules
 ```
 npm install
-pip -r requirements.txt
+cd api/
+pip install -r requirements.txt
 ```
 
 ### set youtube api key
