@@ -5,12 +5,8 @@
 <br>
 
 # Ongaku v0.1
-**Ongaku** 是一個簡單的音樂播放工具，可以播放 youtube 上的任何影片。  
-同時 Ongaku 會自動在網路上搜尋相關歌詞以及翻譯，讓你在享受音樂的同時查看歌詞。  
+**Ongaku** 是一個簡單的音樂播放工具，可以播放 youtube 上的任何影片，並且會自動在網路上搜尋相關歌詞以及翻譯。  
 demo video: https://youtu.be/W3OSHAKRem8  
-
-※目前還在開發中，網站主要提供 DEMO、試玩的用途  
-※在 production 環境中有一些功能會受到限制，有興趣的人歡迎 clone 到本地使用
 
 ## Project Structure
 ```
@@ -51,5 +47,6 @@ YOUTUBE_API_KEY = "YOUR-YOUTUBE-API-KEY"
 ```
 npm run dev
 ```
+
 
 
